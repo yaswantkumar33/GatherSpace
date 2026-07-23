@@ -1,17 +1,28 @@
 const User = require("./../models/UserModel");
 
-exports.getAllUser = (req, res) => {
+exports.getAllUser = async (req, res) => {
+  const allUsers = await User.find();
   res.status(200).json({
-    message: "this is the response fom the user get all controller",
-    status: "'Req Sucessfull",
+    status: "Success",
+    data: allUsers,
   });
 };
 
-exports.addUser = (req, res) => {
+exports.addUser = async (req, res) => {
   console.log(req.body);
-  const bodydata = req.body;
-  res.status(200).json({
-    status: "Success",
-    data: bodydata,
-  });
+
+  try {
+    const bodydata = req.body;
+
+    const newUser = await User.create(req.body);
+    res.status(200).json({
+      status: "Success Creating the User",
+      data: newUser,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      Errmessage: err.message,
+    });
+  }
 };

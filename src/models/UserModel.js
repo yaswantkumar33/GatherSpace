@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  username: {
+  name: {
     type: String,
     required: [true, "UserName is Required"],
   },
@@ -12,7 +12,21 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
   },
+  userRole: {
+    type: String,
+    default: "attendee",
+    enum: {
+      values: ["admin", "attendee", "organizer"],
+      message: [1, "A user must have role!"],
+    },
+  },
+  passwordChangedAt: {
+    type: String,
+  },
+  passwordResetToken: {
+    type: String,
+  },
 });
 
 const User = mongoose.model("User", userSchema);
-module.export = User;
+module.exports = User;
