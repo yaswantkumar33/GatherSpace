@@ -1,4 +1,5 @@
 const User = require("./../models/UserModel");
+const catchAsync = require("./../utlis/catchAsync");
 
 exports.getAllUser = async (req, res) => {
   const allUsers = await User.find();
@@ -8,21 +9,17 @@ exports.getAllUser = async (req, res) => {
   });
 };
 
-exports.addUser = async (req, res) => {
-  console.log(req.body);
+exports.addUser = catchAsync(async (req, res, next) => {
+  const { name, email, password, role } = req.body;
 
-  try {
-    const bodydata = req.body;
+  // if (!name || !email || !password) {
+  //   return next(new AppError("name, email and password are required", 400));
+  // }
 
-    const newUser = await User.create(req.body);
-    res.status(200).json({
-      status: "Success Creating the User",
-      data: newUser,
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      Errmessage: err.message,
-    });
-  }
-};
+  const newUser = await User.create({ name, email, password, role });
+
+  res.status(201).json({
+    status: "success",
+    data: { user: newUser },
+  });
+});
