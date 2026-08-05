@@ -16,9 +16,10 @@ const signRefreshToken = (id) =>
   });
 
 const parseDurationMs = (str) => {
+  //str 7d
   if (!str) return 7 * 24 * 60 * 60 * 1000;
-  const n = parseInt(str.slice(0, -1), 10);
-  const unit = str.slice(-1);
+  const n = parseInt(str.slice(0, -1), 10); //7
+  const unit = str.slice(-1); //d
   if (unit === "m") return n * 60 * 1000;
   if (unit === "h") return n * 60 * 60 * 1000;
   if (unit === "d") return n * 24 * 60 * 60 * 1000;
